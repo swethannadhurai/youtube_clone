@@ -33,7 +33,7 @@ function Home() {
 
     const fetchTags = async () => {
       try {
-        const response = await axios.get("http://localhost:7000/api/v1/tags/getTags",
+        const response = await axios.get("https://youtube-clone-hkrs.onrender.com/api/v1/tags/getTags",
           { withCredentials: true },
         );
         const data = response.data.data;

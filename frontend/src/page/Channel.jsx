@@ -24,7 +24,7 @@ const Channel = () => {
         const fetchChannelData = async () => {
             try {
                 // Make a request to fetch channel data
-                const response = await axios.get(`http://localhost:7000/api/v1/channel/data/${id}`,
+                const response = await axios.get(`https://youtube-clone-hkrs.onrender.com/api/v1/channel/data/${id}`,
                     { withCredentials: true }
                 );
                 if (response.data.message === "Channel fetched successfully") {
