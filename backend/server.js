@@ -63,5 +63,5 @@ connectDB()
 
 
 app.get('/', (req, res) =>{
-    res.send('Api server is running');
+    res.send('Api server is running....');
 });
