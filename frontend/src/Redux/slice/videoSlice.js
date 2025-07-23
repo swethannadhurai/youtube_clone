@@ -30,7 +30,7 @@ export const fetchAllVideos = createAsyncThunk(
   '/api/v1/videos/allVideo',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('/api/v1/videos/allVideo',
+      const response = await axios.get('https://youtube-clone-hkrs.onrender.com/api/v1/videos/allVideo',
         { withCredentials: true}
       );
       return response.data.data;
@@ -45,7 +45,7 @@ export const fetchAllUserVideos = createAsyncThunk(
   '/api/v1/videos/allUserVideo',
   async (ownerId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/v1/videos/allUserVideo/${ownerId}`,
+      const response = await axios.get(`https://youtube-clone-hkrs.onrender.com/api/v1/videos/allUserVideo/${ownerId}`,
         { withCredentials: true}
       );
       return response.data.data;
@@ -60,7 +60,7 @@ export const fetchVideoById = createAsyncThunk(
   '/api/v1/videos/videoData',
   async (videoId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/v1/videos/videoData/${videoId}`,
+      const response = await axios.get(`https://youtube-clone-hkrs.onrender.com/api/v1/videos/videoData/${videoId}`,
         { withCredentials: true}
       );
       return response.data.data;
@@ -75,7 +75,7 @@ export const publishVideo = createAsyncThunk(
   '/api/v1/videos/publish',
   async (videoData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('/api/v1/videos/publish', videoData, {
+      const response = await axios.post('https://youtube-clone-hkrs.onrender.com/api/v1/videos/publish', videoData, {
         headers: { 'Content-Type': 'multipart/form-data' },
          withCredentials: true,
         });
@@ -91,7 +91,7 @@ export const deleteVideo = createAsyncThunk(
   '/api/v1/videos/delete',
   async (videoId, { rejectWithValue }) => {
     try {
-      await axios.delete(`/api/v1/videos/delete/${videoId}`,
+      await axios.delete(`https://youtube-clone-hkrs.onrender.com/api/v1/videos/delete/${videoId}`,
         { withCredentials: true},
       );
       return videoId; // Return deleted video ID to update state
@@ -106,7 +106,7 @@ export const incrementView = createAsyncThunk(
   '/api/v1/videos/incrementView',
   async (videoId, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`/api/v1/videos/incrementView/${videoId}`,
+      const response = await axios.put(`https://youtube-clone-hkrs.onrender.com/api/v1/videos/incrementView/${videoId}`,
         { withCredentials: true},
       );
       return response.data.data;
@@ -121,7 +121,7 @@ export const likeVideo = createAsyncThunk(
   'video/likeVideo',
   async ({ videoId}, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`/api/v1/videos/like`, { videoId},
+      const response = await axios.post(`https://youtube-clone-hkrs.onrender.com/api/v1/videos/like`, { videoId},
         { withCredentials: true },
       );
       return response.data;
@@ -136,7 +136,7 @@ export const removeLikeVideo = createAsyncThunk(
   'video/removeLikeVideo',
   async ({ videoId}, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`/api/v1/videos/removelike`, { videoId},
+      const response = await axios.post(`https://youtube-clone-hkrs.onrender.com/api/v1/videos/removelike`, { videoId},
         { withCredentials: true},
       );
       return response.data;
@@ -151,7 +151,7 @@ export const updateVideo = createAsyncThunk(
   '/api/v1/videos/update',
   async ({ id, formData }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`/api/v1/videos/update/${id}`, formData, {
+      const response = await axios.put(`https://youtube-clone-hkrs.onrender.com/api/v1/videos/update/${id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
         withCredentials: true},
       );

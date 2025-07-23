@@ -15,7 +15,7 @@ export const createChannel = createAsyncThunk(
   async (channelData, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "/api/v1/channel/create",
+        "https://youtube-clone-hkrs.onrender.com/api/v1/channel/create",
         channelData,
         {
           withCredentials: true, // ✅ send cookie
@@ -35,7 +35,7 @@ export const getChannel = createAsyncThunk(
   "channel/data",
   async (channelId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/v1/channel/data/${channelId}`,
+      const response = await axios.get(`https://youtube-clone-hkrs.onrender.com/api/v1/channel/data/${channelId}`,
         {
             withCredentials: true,
         }
@@ -55,7 +55,7 @@ export const updateChannel = createAsyncThunk(
   async ({ channelId, formData }, { rejectWithValue }) => {
     try {
       const response = await axios.put(
-        `/api/v1/channel/update/${channelId}`,
+        `https://youtube-clone-hkrs.onrender.com/api/v1/channel/update/${channelId}`,
         formData,
         {
           withCredentials: true,
@@ -76,7 +76,7 @@ export const deleteChannel = createAsyncThunk(
   async (channelId, { rejectWithValue }) => {
     try {
       const response = await axios.delete(
-        `/api/v1/channel/delete/${channelId}`,
+        `https://youtube-clone-hkrs.onrender.com/api/v1/channel/delete/${channelId}`,
         {
           withCredentials: true,
         }
@@ -96,7 +96,7 @@ export const subscribeChannel = createAsyncThunk(
   async (channelId, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `/api/v1/channel/subscribe/${channelId}`,
+        `https://youtube-clone-hkrs.onrender.com/api/v1/channel/subscribe/${channelId}`,
         {},
         {
           withCredentials: true,
@@ -117,7 +117,7 @@ export const unsubscribeChannel = createAsyncThunk(
   async (channelId, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `/api/v1/channel/unsubscribe/${channelId}`,
+        `https://youtube-clone-hkrs.onrender.com/api/v1/channel/unsubscribe/${channelId}`,
         {},
         {
           withCredentials: true,
