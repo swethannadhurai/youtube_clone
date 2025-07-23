@@ -123,8 +123,8 @@ CLOUD_API_SECRET=your_cloudinary_api_secret
 ## 🌐 Visit in Browser
 Once both servers are running:
 
-Frontend: http://localhost:5173
-Backend: http://localhost:7000
+Frontend: https://whimsical-semolina-802b74.netlify.app
+Backend:  https://youtube-clone-hkrs.onrender.com
 
 ---
 
