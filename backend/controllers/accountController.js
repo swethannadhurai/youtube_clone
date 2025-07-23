@@ -57,12 +57,12 @@ export const login = asyncHandler(async (req, res) => {
     const { accessToken } = await generateAccessToken(userfind._id);
     const loggedInUser = await newUser.findById(userfind._id).select('-password');
 
-    const isProduction = process.env.NODE_ENV === "production";
+    //const isProduction = process.env.NODE_ENV === "production";
 
     const options = {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? "None" : "Lax",
+        secure: true,
+        sameSite: "None",
         maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     };
 
@@ -77,8 +77,8 @@ export const logoutUser = asyncHandler(async (req, res) => {
         .status(200)
         .clearCookie("accessToken", {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax"
+            secure: true,
+            sameSite: "None",
         })
         .json(new ApiResponse(200, {}, "User logged out"));
 });
