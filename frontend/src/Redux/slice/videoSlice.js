@@ -81,7 +81,10 @@ export const publishVideo = createAsyncThunk(
         });
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error.response.data.message);
+      return rejectWithValue(
+        error?.response?.data?.message || "Video upload failed"
+     );
+
     }
   }
 );
@@ -119,9 +122,9 @@ export const incrementView = createAsyncThunk(
 // Like a video
 export const likeVideo = createAsyncThunk(
   'video/likeVideo',
-  async ({ videoId}, { rejectWithValue }) => {
+  async ({ videoId, userId}, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`https://youtube-clone-hkrs.onrender.com/api/v1/videos/like`, { videoId},
+      const response = await axios.post(`https://youtube-clone-hkrs.onrender.com/api/v1/videos/like`, { videoId, userId},
         { withCredentials: true },
       );
       return response.data;
@@ -134,9 +137,9 @@ export const likeVideo = createAsyncThunk(
 // Remove a like from a video
 export const removeLikeVideo = createAsyncThunk(
   'video/removeLikeVideo',
-  async ({ videoId}, { rejectWithValue }) => {
+  async ({ videoId, userId}, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`https://youtube-clone-hkrs.onrender.com/api/v1/videos/removelike`, { videoId},
+      const response = await axios.post(`https://youtube-clone-hkrs.onrender.com/api/v1/videos/removelike`, { videoId, userId},
         { withCredentials: true},
       );
       return response.data;
