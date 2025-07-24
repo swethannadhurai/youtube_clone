@@ -53,18 +53,21 @@ export const login = createAsyncThunk(
   Makes a POST request to the logout API endpoint
 */
 export const logout = createAsyncThunk(
-    '/api/v1/account/logout',
-    async (_, { rejectWithValue }) => {
-        try {
-            await axios.post('https://youtube-clone-hkrs.onrender.com/api/v1/account/logout',
-                { withCredentials: true }
-            );
-            return true; // Successful logout returns true
-        } catch (error) {
-            return rejectWithValue(error.response.data.message); // Return error message
-        }
+  '/api/v1/account/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      await axios.post(
+        'https://youtube-clone-hkrs.onrender.com/api/v1/account/logout',
+        {}, // empty body
+        { withCredentials: true } // ✅ now it's in the config
+      );
+      return true;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Logout failed");
     }
+  }
 );
+
 
 /* 
   Async thunk to fetch user data based on user ID 

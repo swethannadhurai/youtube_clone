@@ -13,50 +13,51 @@ import mongoose from "mongoose";
 export const publishAVideo = asyncHandler(async (req, res) => {
   const { title, description, tags } = req.body;
   const thumbnailFile = req.files?.thumbnail?.[0]; // Thumbnail file
-  const videoFile = req.files?.videoFile?.[0]; // Video file
+  const videoFile = req.files?.videoFile?.[0];     // Video file
 
-  // Check if required fields are provided
+  // 1. Validate required fields
   if (!title || !description || !thumbnailFile || !videoFile) {
     throw new ApiError(400, "All fields are required, including thumbnail and video files");
   }
 
-  // Upload files to Cloudinary
+  // 2. Upload to Cloudinary (make sure secure_url is returned from uploader)
   const [thumbnailFilePath, videoFilePath] = await Promise.all([
     uploadOnCloudinary(thumbnailFile.path),
     uploadOnCloudinary(videoFile.path),
   ]);
 
-  if (!thumbnailFilePath || !videoFilePath) {
+  // 3. Validate upload success
+  if (!thumbnailFilePath.url || !videoFilePath.url) {
     throw new ApiError(400, "File upload failed");
   }
 
-  // Handle tags - create tags if they don't exist
-  const tagArray = tags ? tags.split(",").map((tag) => tag.trim().toLowerCase()) : [];
+  // 4. Normalize tags and ensure they exist
+  const tagArray = tags ? tags.split(",").map(tag => tag.trim().toLowerCase()) : [];
   for (const tagName of tagArray) {
     const existingTag = await Tag.findOne({ name: tagName });
     if (!existingTag) await Tag.create({ name: tagName });
   }
 
-  // Create the video document
+  // 5. Create new video document
   const video = await Video.create({
     title,
     description,
-    thumbnail: thumbnailFilePath.url,
-    videoFile: videoFilePath.url,
-    owner: req.user._id, // User uploading the video
-    channelId: req.user.channelId, // Associated channel
+    thumbnail: thumbnailFilePath.url,  
+    videoFile: videoFilePath.url,      
+    owner: req.user._id,
+    channelId: req.user.channelId,
     views: 0,
     tags: tagArray,
   });
 
-  // Update the channel with the new video
+  // 6. Update channel video list
   const channel = await Channel.findById(req.user.channelId);
   if (!channel) throw new ApiError(404, "Channel not found");
 
   channel.videos.push(video._id);
   await channel.save();
 
-  // Send success response
+  // 7. Return response
   res.status(201).json(new ApiResponse(201, video, "Video published successfully"));
 });
 

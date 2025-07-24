@@ -59,13 +59,23 @@ function Navbar({ openChange, onSearch }) {
   };
 
   // Handle user sign out by dispatching logout action
-  const handleSignOut = () => {
-    dispatch(logout());
+ const handleSignOut = async () => {
+  try {
+    await dispatch(logout()).unwrap();   // ensure the logout API call is successful
+    dispatch(clearUserData());           // optional: clears user from Redux state
     toast({
       title: "You have successfully logged out.",
     });
-    navigate("/"); // Redirect to Sign In page after logout
-  };
+    navigate("/login");                  // redirect to login page
+  } catch (error) {
+    toast({
+      title: "Logout failed",
+      description: error || "Please try again later.",
+      variant: "destructive",
+    });
+    console.error("Logout error:", error);
+  }
+};
   // Effect hook to fetch user data whenever the user changes
   useEffect(() => {
     if (userdata?._id) {
