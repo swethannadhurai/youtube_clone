@@ -132,7 +132,11 @@ export const updateAccount = createAsyncThunk(
 const authSlice = createSlice({
     name: 'auth', 
     initialState, 
-    reducers: {}, 
+    reducers: {
+    clearUserData: (state) => {
+      state.user = null;
+    },
+  },
 
     // Extra reducers to handle async thunks
     extraReducers: (builder) => {
@@ -232,5 +236,5 @@ const authSlice = createSlice({
     },
 });
 
-
+export const { clearUserData } = authSlice.actions;
 export default authSlice.reducer;

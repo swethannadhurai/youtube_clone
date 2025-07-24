@@ -11,6 +11,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import CreateChannel from './CreateChannel'; 
 import { useToast } from "../hooks/use-toast"; 
 import { RiVideoUploadLine } from "react-icons/ri"; 
+import { clearUserData } from '../Redux/slice/authSlice';
 
 // Navbar component definition
 function Navbar({ openChange, onSearch }) {
