@@ -20,7 +20,7 @@ const uploadOnCloudinary = async (localFilePath) => {
 
         // Upload the file on Cloudinary
         const response = await cloudinary.uploader.upload(localFilePath, {
-            resource_type: "video",
+            resource_type: "auto",
             media_metadata: true,
             secure: true,
         });

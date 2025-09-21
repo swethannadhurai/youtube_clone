@@ -2,86 +2,85 @@
 import mongoose, { Schema } from "mongoose";  
 import mongooseAggregatePaginate from "mongoose-aggregate-paginate-v2"; 
 
-// Schema definition for the video model
+
 const videoSchema = new Schema(
     {
-        // The path or URL of the video file
+        
         videoFile: {
-            type: String,         // Data type is String
-            required: true        // Video file is required
+            type: String,         
+            required: true
         },
 
-        // The path or URL of the thumbnail image
+        
         thumbnail: {
-            type: String,         // Data type is String
-                  // Thumbnail is required
+            type: String,         
+            required: true   
         },
 
-        // The title of the video
+    
         title: {
-            type: String,         // Data type is String
-            required: true        // Title is required
+            type: String,         
+            required: true    
         },
 
-        // A brief description of the video
+
         description: {
-            type: String,         // Data type is String
-            required: true        // Description is required
+            type: String,        
+            required: true     
         },
 
-        // The duration of the video in seconds
+        
         duration: {
-            type: Number,         // Data type is Number
-            default: 0            // Default value is 0 (in case the duration is not provided)
+            type: Number,         
+            default: 0         
         },
 
-        // The number of views the video has received
+        
         views: {
-            type: Number,         // Data type is Number
-            default: 0            // Default value is 0 (initial view count)
+            type: Number,         
+            default: 0      
         },
 
-        // Reference to the user who owns the video
+        
         owner: {
-            type: Schema.Types.ObjectId,   // Type is ObjectId, referencing the 'newUser' model
-            ref: "newUser",                 // Refers to the 'newUser' model for population
-            required: true                  // Owner is required for each video
+            type: Schema.Types.ObjectId,  
+            ref: "newUser",            
+            required: true            
         },
 
-        // Reference to the channel where the video is uploaded (optional)
         channelId: {
-            type: Schema.Types.ObjectId,   // Type is ObjectId, referencing the 'Channel' model
-            ref: "Channel"                 // Refers to the 'Channel' model for population
+            type: Schema.Types.ObjectId,  
+            ref: "Channel"                
         },
 
-        // An array of tags associated with the video
+        
         tags: [
             {
-                type: String,              // Data type is String for each tag
+                type: String,          
             },
         ],
 
-        // An array of users who liked the video
+        
         likes: [
             {
-                type: Schema.Types.ObjectId,   // Type is ObjectId, referencing the 'newUser' model
-                ref: "newUser"                 // Refers to the 'newUser' model for population
+                type: Schema.Types.ObjectId,   
+                ref: "newUser"              
             }
         ]
     },
     {
-        timestamps: true      // Automatically adds createdAt and updatedAt fields
+        timestamps: true  
     }
 );
 
-// Method to increment the view count of the video
+
 videoSchema.methods.incrementViews = async function () {
-    this.views++;            // Increment the views count
-    await this.save();       // Save the updated video document
+    this.views++;           
+    await this.save();       
 };
 
-// Adding pagination functionality to aggregate queries using mongoose-aggregate-paginate-v2 plugin
+/
 videoSchema.plugin(mongooseAggregatePaginate);
 
-// Exporting the Video model
+
 export const Video = mongoose.model("Video", videoSchema);
