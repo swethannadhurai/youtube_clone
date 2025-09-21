@@ -18,7 +18,7 @@ const uploadOnCloudinary = async (localFilePath) => {
             throw new Error("Local file path is required");
         }
 
-        // Upload the file on Cloudinary
+    
         const response = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto",
             media_metadata: true,
@@ -29,16 +29,16 @@ const uploadOnCloudinary = async (localFilePath) => {
 
         return { url: response.secure_url };
     } catch (error) {
-        // Log the error
+        
         console.error("Error uploading file:", error.message);
 
-        // Ensure the local file exists before attempting to unlink it
+    
         if (fs.existsSync(localFilePath)) {
-            // Remove the locally saved temporary file as the upload operation failed
+        
             fs.unlinkSync(localFilePath);
         }
 
-        // Return an object with an error message
+        
         return { error: error.message };
     }
 };

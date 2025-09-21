@@ -20,16 +20,21 @@ export const publishAVideo = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  // 2. Upload to Cloudinary (make sure secure_url is returned from uploader)
-  const [thumbnailFilePath, videoFilePath] = await Promise.all([
-    uploadOnCloudinary(thumbnailFile.path),
-    uploadOnCloudinary(videoFile.path),
-  ]);
+// 2. Upload to Cloudinary
+const [thumbnailFilePath, videoFilePath] = await Promise.all([
+  uploadOnCloudinary(thumbnailFile.path),
+  uploadOnCloudinary(videoFile.path),
+]);
 
-  // 3. Validate upload success
-  if (!thumbnailFilePath.url || !videoFilePath.url) {
-    throw new ApiError(400, "File upload failed");
-  }
+// 3. Validate upload success
+if (thumbnailFilePath.error || videoFilePath.error) {
+  throw new ApiError(400, `File upload failed: ${thumbnailFilePath.error || videoFilePath.error}`);
+}
+
+if (!thumbnailFilePath.url || !videoFilePath.url) {
+  throw new ApiError(400, "File upload failed");
+}
+
 
   // 4. Normalize tags and ensure they exist
   const tagArray = tags ? tags.split(",").map(tag => tag.trim().toLowerCase()) : [];
