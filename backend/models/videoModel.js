@@ -14,7 +14,7 @@ const videoSchema = new Schema(
         // The path or URL of the thumbnail image
         thumbnail: {
             type: String,         // Data type is String
-            required: true        // Thumbnail is required
+                  // Thumbnail is required
         },
 
         // The title of the video

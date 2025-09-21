@@ -16,7 +16,7 @@ export const publishAVideo = asyncHandler(async (req, res) => {
   const videoFile = req.files?.videoFile?.[0];     // Video file
 
   // 1. Validate required fields
-  if (!title || !description || !thumbnailFile || !videoFile) {
+  if (!title || !description || !videoFile) {
     throw new ApiError(400, "All fields are required, including thumbnail and video files");
   }
 

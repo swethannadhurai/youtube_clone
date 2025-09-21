@@ -31,7 +31,7 @@ export const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(409, "User with email or username already exists");
     }
 
-    const avatar = "https://res.cloudinary.com/dpdwl1tsu/image/upload/v1733578739/egt2sufg3qzyn1ofws9t_xvfn00.jpg";
+    const avatar = "https://res.cloudinary.com/dpdwl1tsu/image/upload/v1733578739/egt2sufg3qzyn1ofws9t_xvfn00.jpg";//
     const user = await newUser.create({ name, email, password, avatar });
 
     return res.status(201).json(new ApiResponse(200, user, "User created successfully"));
