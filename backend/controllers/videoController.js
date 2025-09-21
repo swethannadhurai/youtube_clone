@@ -17,7 +17,7 @@ export const publishAVideo = asyncHandler(async (req, res) => {
 
   // 1. Validate required fields
   if (!title || !description || !videoFile) {
-    throw new ApiError(400, "All fields are required, including thumbnail and video files");
+    throw new ApiError(400, "All fields are required");
   }
 
   // 2. Upload to Cloudinary (make sure secure_url is returned from uploader)
