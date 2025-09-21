@@ -8,7 +8,7 @@ const router = Router()
 
 router.route("/signup").post(registerUser)
 router.route("/login").post(login)
-router.route("/logout").post(verifyJWT, logoutUser)
+router.route("/logout").post(logoutUser)
 router.route("/delete/:id").delete(deleteAccount)
 router.route("/update/:id").put(upload.single("avatar"), updateAccount);
 router.route("/userData/:id").get(getUserById)
