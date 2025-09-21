@@ -2,15 +2,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-/*
-  **Initial State**
-  - `videos`: List of all videos.
-  - `userVideos`: Videos uploaded by a specific user.
-  - `video`: Details of a single video.
-  - `loading`: Tracks loading state during API requests.
-  - `error`: Stores error messages if requests fail.
-  - `status`: General status flag (optional, can be expanded for other use cases).
-*/
+
 const initialState = {
   videos: [],
   userVideos: [],
@@ -20,10 +12,7 @@ const initialState = {
   status: false,
 };
 
-/*
-  **Async Thunks**
-  - Thunks handle asynchronous operations (API calls).
-*/
+
 
 // Fetch all videos
 export const fetchAllVideos = createAsyncThunk(
@@ -71,23 +60,33 @@ export const fetchVideoById = createAsyncThunk(
 );
 
 // Publish a new video
+
 export const publishVideo = createAsyncThunk(
   '/api/v1/videos/publish',
   async (videoData, { rejectWithValue }) => {
     try {
-      const response = await axios.post('https://youtube-clone-hkrs.onrender.com/api/v1/videos/publish', videoData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-         withCredentials: true,
-        });
+      const response = await axios.post(
+        'https://youtube-clone-hkrs.onrender.com/api/v1/videos/publish',
+        videoData,
+        {
+          withCredentials: true, 
+        }
+      );
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(
-        error?.response?.data?.message || "Video upload failed"
-     );
+      // Detailed error logging
+      console.error("Publish Video Error Response:", error.response);
+      console.error("Publish Video Error Request:", error.request);
+      console.error("Publish Video Error Message:", error.message);
 
+      // Return error message for Redux slice
+      return rejectWithValue(
+        error?.response?.data?.message || "Video upload failed. Check console for details."
+      );
     }
   }
 );
+
 
 // Delete a video by ID
 export const deleteVideo = createAsyncThunk(
