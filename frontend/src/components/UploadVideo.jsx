@@ -53,7 +53,7 @@ function UploadVideo() {
         formData.append('title', title);
         formData.append('description', description);
         formData.append('thumbnail', thumbnail);
-        formData.append('video', videoFile); // ✅ key matches backend
+        formData.append('videoFile', videoFile); // ✅ key matches backend
         formData.append('tags', tags);
 
         try {

@@ -12,59 +12,58 @@ import mongoose from "mongoose";
 // Upload and publish a new video
 export const publishAVideo = asyncHandler(async (req, res) => {
   const { title, description, tags } = req.body;
-  const thumbnailFile = req.files?.thumbnail?.[0]; // Thumbnail file
-  const videoFile = req.files?.videoFile?.[0];     // Video file
+  const thumbnailFile = req.files?.thumbnail?.[0];
+  const videoFile = req.files?.videoFile?.[0];
 
   // 1. Validate required fields
   if (!title || !description || !thumbnailFile || !videoFile) {
     throw new ApiError(400, "All fields are required");
   }
 
-// 2. Upload to Cloudinary
-const [thumbnailFilePath, videoFilePath] = await Promise.all([
-  uploadOnCloudinary(thumbnailFile.path),
-  uploadOnCloudinary(videoFile.path),
-]);
+  // 2. Upload to Cloudinary
+  const [thumbnailFilePath, videoFilePath] = await Promise.all([
+    uploadOnCloudinary(thumbnailFile.path),
+    uploadOnCloudinary(videoFile.path),
+  ]);
 
-// 3. Validate upload success
-if (thumbnailFilePath.error || videoFilePath.error) {
-  throw new ApiError(400, `File upload failed: ${thumbnailFilePath.error || videoFilePath.error}`);
-}
+  // 3. Validate upload success
+  if (thumbnailFilePath.error || videoFilePath.error) {
+    throw new ApiError(400, `File upload failed: ${thumbnailFilePath.error || videoFilePath.error}`);
+  }
 
-if (!thumbnailFilePath.url || !videoFilePath.url) {
-  throw new ApiError(400, "File upload failed");
-}
+  if (!thumbnailFilePath.url || !videoFilePath.url) {
+    throw new ApiError(400, "File upload failed: No URL returned");
+  }
 
-
-  // 4. Normalize tags and ensure they exist
+  // 4. Normalize tags
   const tagArray = tags ? tags.split(",").map(tag => tag.trim().toLowerCase()) : [];
   for (const tagName of tagArray) {
     const existingTag = await Tag.findOne({ name: tagName });
     if (!existingTag) await Tag.create({ name: tagName });
   }
 
-  // 5. Create new video document
+  // 5. Create video
   const video = await Video.create({
     title,
     description,
-    thumbnail: thumbnailFilePath.url,  
-    videoFile: videoFilePath.url,      
+    thumbnail: thumbnailFilePath.url,
+    videoFile: videoFilePath.url,
     owner: req.user._id,
     channelId: req.user.channelId,
     views: 0,
     tags: tagArray,
   });
 
-  // 6. Update channel video list
+  // 6. Update channel
   const channel = await Channel.findById(req.user.channelId);
   if (!channel) throw new ApiError(404, "Channel not found");
 
   channel.videos.push(video._id);
   await channel.save();
 
-  // 7. Return response
   res.status(201).json(new ApiResponse(201, video, "Video published successfully"));
 });
+ 
 
 // Get all videos
 export const getAllVideos = asyncHandler(async (req, res) => {
